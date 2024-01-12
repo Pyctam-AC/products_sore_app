@@ -1,1 +1,1 @@
-# products_sore_app
+# Products Store App
