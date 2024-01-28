@@ -11,38 +11,19 @@ import { GlobalErrorComponent } from './components/global-error/global-error.com
 import { FilterProductsPipe } from './pipes/filter-products.pipe';
 import { ModalComponent } from './components/modal/modal.component'
 import { CreateProductComponent } from './components/create-product/create-product.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { ModalService } from './services/modal.service';
 //import { products as data } from './data/product';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, RouterOutlet, ProductComponent, HttpClientModule, GlobalErrorComponent, FormsModule, FilterProductsPipe, ModalComponent, CreateProductComponent],
+  imports: [CommonModule, CurrencyPipe, RouterOutlet, ProductComponent, HttpClientModule, GlobalErrorComponent, FormsModule, FilterProductsPipe, ModalComponent, CreateProductComponent,  NavigationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [ProductService]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  title = 'products store app';
-  /* products: IProduct[] = data */
-  products: IProduct[] = [];
-  loading: boolean = false
-  products$: Observable<IProduct[]>
-  term: '';
 
-  constructor (private productServices: ProductService) {
-
-  }
-
-  ngOnInit(): void {
-    this.loading = true;
-    this.products$ = this.productServices.getAll().pipe (
-      tap(() => this.loading = false)
-    )
-    /* this.productServices.getAll().subscribe((products) => {
-      //console.log(products)
-      this.products = products;
-      this.loading = false;
-    })*/
-  }
 }

@@ -1,16 +1,53 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, NgForm } from '@angular/forms';
+import {NgIf} from '@angular/common'
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FocusDirective } from '../../directives/focus.directive';
+import { ProductService } from '../../services/product.service';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-create-product',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ReactiveFormsModule, NgIf, FocusDirective],
   templateUrl: './create-product.component.html',
   styleUrl: './create-product.component.scss'
 })
 export class CreateProductComponent {
+
+  constructor (
+    private productService: ProductService,
+    private modalService: ModalService
+    ) {
+
+  }
+
   form = new FormGroup ({
-    title: new FormControl<string>('')
+    title: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(6)
+    ])
   })
-submit: any;
+
+  get title () {
+    return this.form.controls.title as FormControl
+  }
+
+  submit () {
+    console.log(this.title)
+    console.log(this.form.value)
+
+    this.productService.create({
+      title: this.form.value.title as string,
+      price: 13.5,
+      description: 'lorem ipsum set',
+      image: 'https://i.pravatar.cc',
+      category: 'electronic',
+      rating: {
+        rate: 39,
+        count: 1
+      }
+    }).subscribe (() => {
+      this.modalService.close()
+    })
+  }
 }
